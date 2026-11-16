@@ -22,6 +22,8 @@ It costs nothing to run: the site is static files on a free host, and the data l
 
 > This is a personal record and an educational aid, not a medical device. The treating doctor's advice comes first.
 
+**Live site:** <https://tuhin-dhar.github.io/vitalpath-health-journal/> (GitHub Pages, connected to the Supabase project `tpaojupaqwsdehscjkyp` in Mumbai).
+
 ---
 
 ## Try it first (no setup)
