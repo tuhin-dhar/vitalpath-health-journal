@@ -298,9 +298,11 @@ async function enter(user) {
     $('authGate').hidden = true; $('setupView').hidden = true;
     $('userbar').hidden = false; $('userEmail').textContent = user.email || '';
     try {
+      $('loader').hidden = false;
       S.profile = await DB.getProfile(user.id);
       await loadAll();
     } catch (err) { S.user = null; showAuth(); msg('authMsg', 'bad', 'Could not load your records.', friendly(err)); return; }
+    finally { $('loader').hidden = true; }
     if (!S.profile) { openProfile(true); return; }
     resetLabForm();   // lab reference ranges depend on the profile's sex
     $('app').hidden = false; renderAll();
@@ -380,7 +382,7 @@ function renderCareDirectoryEditor() {
 }
 function renderHomeContacts() {
   const c = contacts();
-  const setNumber = (id, value) => { const el = $(id); el.textContent = value || 'Not set'; el.href = value ? 'tel:' + String(value).replace(/[^+0-9]/g, '') : '#'; };
+  const setNumber = (id, value) => { $(id).textContent = value || 'Not set'; $(id + 'Call').href = value ? 'tel:' + String(value).replace(/[^+0-9]/g, '') : '#'; };
   setNumber('homeAmbulance', c.ambulanceNumber || '108'); setNumber('homeEmergency', c.nationalEmergencyNumber || '112');
   const rows = c.directory.filter(x => x.name).map(x => {
     const phone = x.phone ? ` · <a href="tel:${esc(String(x.phone).replace(/[^+0-9]/g, ''))}">${esc(x.phone)}</a>` : '';
@@ -406,16 +408,49 @@ function migrateLegacyContacts(c) {
 }
 
 // ───────────────────────── Rendering ─────────────────────────
+const SECONDARY_PAGES = ['history', 'medical', 'share', 'settings'];
+const REDUCE_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)');
+// The More sheet on phones: it gets its own history entry so the phone's Back button closes it.
+function openMore() {
+  if (!$('moreSheet').hidden) return;
+  $('moreSheet').hidden = false;
+  document.documentElement.style.overflow = 'hidden';
+  history.pushState({ page: (history.state && history.state.page) || 'home', sheet: true }, '');
+  const first = $('moreSheet').querySelector('.tab'); if (first) first.focus();
+}
+// keepHistory: the caller is about to push its own entry (a page change), so just drop the sheet's entry.
+function closeMore(keepHistory) {
+  if ($('moreSheet').hidden) return;
+  $('moreSheet').hidden = true;
+  document.documentElement.style.overflow = '';
+  if (history.state && history.state.sheet) {
+    if (keepHistory) history.replaceState({ page: history.state.page }, '');
+    else history.back();
+  }
+  $('moreTab').focus({ preventScroll: true });
+}
 function showPage(id, fromHistory) {
-  if (!fromHistory && history.state && history.state.page !== id) history.pushState({ page: id }, '');
+  if (!fromHistory && history.state) {
+    // Picking a section from the open More sheet reuses the sheet's history entry, so Back returns to the previous section.
+    if (history.state.sheet) history.replaceState({ page: id }, '');
+    else if (history.state.page !== id) history.pushState({ page: id }, '');
+  }
   document.querySelectorAll('.page').forEach(x => x.classList.toggle('active', x.id === id));
-  document.querySelectorAll('.tab').forEach(x => x.classList.toggle('active', x.dataset.page === id));
+  document.querySelectorAll('.tab[data-page]').forEach(x => {
+    const on = x.dataset.page === id;
+    x.classList.toggle('active', on);
+    if (on) x.setAttribute('aria-current', 'page'); else x.removeAttribute('aria-current');
+  });
+  const secondary = SECONDARY_PAGES.includes(id);
+  $('moreTab').classList.toggle('active', secondary);
+  if (secondary) $('moreTab').setAttribute('aria-current', 'page'); else $('moreTab').removeAttribute('aria-current');
+  closeMore(true);
   if (id === 'history') renderHistory();
   if (id === 'labs') { renderLabList(); renderLabTrend(); }
   if (id === 'medical') renderMedicalList();
   if (id === 'settings') loadContactsForm();
   if (id === 'share') { updateExportSummary(); renderShareLinks(); }
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  window.scrollTo({ top: 0, behavior: REDUCE_MOTION.matches ? 'auto' : 'smooth' });
 }
 const latestBy = (arr, col) => arr.reduce((a, b) => (!a || ms(b[col]) > ms(a[col])) ? b : a, null);
 const gaugeColor = lvl => lvl === 'bad' ? '#b42318' : lvl === 'warn' ? '#c17b12' : '#18794e';
@@ -425,6 +460,8 @@ function renderAll() {
 }
 function renderHome() {
   const p = S.profile;
+  const hr = new Date().getHours();
+  $('homeGreeting').textContent = (hr < 5 ? 'Good evening' : hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening') + ' 👋';
   $('homeName').textContent = p.name;
   $('homeMeta').textContent = ['Age ' + p.age, p.sex, p.condition].filter(Boolean).join(' • ');
   $('homeExtra').textContent = [p.height_cm ? 'Height ' + p.height_cm + ' cm' : '', p.weight_kg ? 'Weight ' + p.weight_kg + ' kg' : '',
@@ -473,7 +510,10 @@ function latestLabValues() {
 
 // Simple line chart on a canvas.
 function drawChart(canvasId, series, xLabels, emptyText) {
-  const c = $(canvasId), ctx = c.getContext('2d'), w = c.width, h = c.height;
+  const c = $(canvasId), ctx = c.getContext('2d'), dpr = Math.min(window.devicePixelRatio || 1, 3);
+  const w = c.clientWidth || c.parentElement.clientWidth || 600, h = w < 520 ? 210 : 240;
+  c.width = Math.round(w * dpr); c.height = Math.round(h * dpr); c.style.height = h + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   ctx.clearRect(0, 0, w, h); ctx.font = '13px system-ui, sans-serif';
   const values = series.flatMap(s => s.values).filter(v => v != null && !isNaN(v));
   if (!values.length) { ctx.fillStyle = '#617580'; ctx.font = '15px system-ui, sans-serif'; ctx.fillText(emptyText || 'No readings recorded yet', 20, 100); return; }
@@ -492,6 +532,12 @@ function drawChart(canvasId, series, xLabels, emptyText) {
     idx.forEach(i => { const t = xLabels[i] || ''; const tw = ctx.measureText(t).width; ctx.fillText(t, Math.min(R - tw, Math.max(L, xAt(i) - tw / 2)), h - 10); });
   }
   series.forEach(ss => {
+    if (ss.values.length > 1) {   // soft fill under the line
+      const grad = ctx.createLinearGradient(0, T, 0, B); grad.addColorStop(0, ss.color + '33'); grad.addColorStop(1, ss.color + '00');
+      ctx.beginPath(); ss.values.forEach((v, i) => { const x = xAt(i), y = yAt(v); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); });
+      ctx.lineTo(xAt(ss.values.length - 1), B); ctx.lineTo(xAt(0), B); ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+    }
+    ctx.lineJoin = 'round'; ctx.lineCap = 'round';
     ctx.strokeStyle = ss.color; ctx.fillStyle = ss.color; ctx.lineWidth = 3; ctx.beginPath();
     ss.values.forEach((v, i) => { const x = xAt(i), y = yAt(v); i ? ctx.lineTo(x, y) : ctx.moveTo(x, y); }); ctx.stroke();
     ss.values.forEach((v, i) => { ctx.beginPath(); ctx.arc(xAt(i), yAt(v), 3.5, 0, Math.PI * 2); ctx.fill(); });
@@ -499,11 +545,14 @@ function drawChart(canvasId, series, xLabels, emptyText) {
 }
 const shortDate = iso => new Date(iso).toLocaleDateString('en-IN', { day: '2-digit', month: 'short' });
 
-function renderHistory() {
+function renderHistoryCharts() {
   const bp = S.bp.slice().sort(byTime('taken_at')).slice(-30);
   drawChart('bpChart', [{ color: '#087e8b', values: bp.map(x => x.systolic) }, { color: '#d17b20', values: bp.map(x => x.diastolic) }], bp.map(x => shortDate(x.taken_at)));
   const t = $('filterType').value, gs = S.glucose.filter(x => x.measure_type === t).sort(byTime('taken_at')).slice(-30);
   drawChart('glChart', [{ color: '#087e8b', values: gs.map(x => toMgdl(Number(x.value), x.unit)) }], gs.map(x => shortDate(x.taken_at)), 'No ' + t.toLowerCase() + ' readings yet');
+}
+function renderHistory() {
+  renderHistoryCharts();
   const all = [...S.bp.map(x => ({ at: x.taken_at, type: 'BP', value: x.systolic + '/' + x.diastolic + ' mmHg' + (x.pulse ? ' · pulse ' + x.pulse : ''), status: bpCheck(x.systolic, x.diastolic), kind: 'bp', id: x.id })),
     ...S.glucose.map(x => ({ at: x.taken_at, type: x.measure_type, value: fmtNum(x.value) + ' ' + x.unit, status: glCheck(Number(x.value), x.unit, x.measure_type), kind: 'glucose', id: x.id }))]
     .sort((a, b) => ms(b.at) - ms(a.at));
@@ -1183,6 +1232,8 @@ const ACTIONS = {
   sharedPDF: async () => { const f = await makeFile(SHARED, 'pdf', false); downloadBlob(f, f.name); },
   sharedCSV: async () => { const f = await makeFile(SHARED, 'csv', false); downloadBlob(f, f.name); },
   print: () => window.print(),
+  openMore: () => openMore(),
+  pickImport: () => $('importFile').click(),
   addCareContact: async () => {
     const c = syncCareCards(); c.directory.push({ kind: 'Doctor', name: '', speciality: '', phone: '', facility: '', address: '', notes: '' });
     renderCareDirectoryEditor(); const el = $('careName' + (c.directory.length - 1)); if (el) el.focus();
@@ -1229,7 +1280,41 @@ document.addEventListener('click', async e => {
   catch (err) { console.error(err); if (ERROR_BOX[name]) msg(ERROR_BOX[name], 'bad', 'Something went wrong.', friendly(err)); else toast(friendly(err)); }
   finally { if (isBtn && el.isConnected) el.disabled = false; }
 });
-document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
+document.querySelectorAll('.tab[data-page]').forEach(b => b.addEventListener('click', () => showPage(b.dataset.page)));
+$('moreSheet').addEventListener('click', e => { if (e.target.id === 'moreSheet') closeMore(); });
+// Hide the bottom tab bar while the on-screen keyboard is likely open, so it never floats over a form.
+const TYPING = 'input:not([type=checkbox]):not([type=file]):not([type=radio]),select,textarea';
+document.addEventListener('focusin', e => { if (e.target.matches && e.target.matches(TYPING)) document.body.classList.add('typing'); });
+document.addEventListener('focusout', () => setTimeout(() => {
+  if (!(document.activeElement && document.activeElement.matches && document.activeElement.matches(TYPING))) document.body.classList.remove('typing');
+}, 50));
+// On phones, tables turn into stacked cards: label every cell with its column heading.
+function stackTables(root) {
+  root.querySelectorAll('table:not(.stack)').forEach(t => {
+    const heads = [...t.querySelectorAll('th')].map(th => th.textContent.trim());
+    if (!heads.length) return;
+    t.classList.add('stack');
+    t.querySelectorAll('tr').forEach(tr => [...tr.children].forEach((td, i) => {
+      if (td.tagName !== 'TD') return;
+      td.dataset.label = heads[i] || '';
+      if (/^actions$/i.test(heads[i] || '')) { td.classList.add('acts'); return; }
+      if (!td.querySelector(':scope > .v')) {   // one wrapper, so the label and the value are the only two flex items
+        const v = document.createElement('span'); v.className = 'v';
+        while (td.firstChild) v.appendChild(td.firstChild);
+        td.appendChild(v);
+      }
+    }));
+  });
+}
+new MutationObserver(() => { stackTables($('app')); stackTables($('shareView')); }).observe(document.body, { childList: true, subtree: true });
+// Redraw charts when the screen size changes (phone rotation, window resize).
+let resizeTimer, lastWidth = window.innerWidth;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => {
+  if (!S.profile || window.innerWidth === lastWidth) return;   // ignore phone toolbar show/hide (height only)
+  lastWidth = window.innerWidth;
+  if ($('history').classList.contains('active')) renderHistoryCharts();
+  if ($('labs').classList.contains('active')) renderLabTrend();
+}, 200); });
 $('authForm').addEventListener('submit', submitAuth);
 $('filterType').addEventListener('change', renderHistory);
 $('labTrendTest').addEventListener('change', renderLabTrend);
@@ -1237,14 +1322,17 @@ $('lrFiles').addEventListener('change', e => addPendingFiles(e.target.files));
 $('importFile').addEventListener('change', async e => { const f = e.target.files[0]; e.target.value = ''; if (f) { try { await importOld(f); } catch (err) { msg('importResult', 'bad', 'Import failed.', friendly(err)); } } });
 ['exKind', 'exDay', 'exMonth', 'exFrom', 'exTo'].forEach(id => $(id).addEventListener('change', updateExportSummary));
 $('lightbox').addEventListener('click', e => { if (e.target.id === 'lightbox') $('lightbox').hidden = true; });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') $('lightbox').hidden = true; });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') { $('lightbox').hidden = true; closeMore(); } });
 window.addEventListener('hashchange', () => {
   const m = location.hash.match(/^#share=([A-Za-z0-9]+)$/);
   if (m && DB) showShared(m[1]);
   else if (!$('shareView').hidden) location.reload();   // leaving a shared report: bring the app back
 });
 // Phone Back button moves between tabs instead of leaving the site.
-window.addEventListener('popstate', e => { if (e.state && e.state.page && S.profile) showPage(e.state.page, true); });
+window.addEventListener('popstate', e => {
+  if (!$('moreSheet').hidden) { $('moreSheet').hidden = true; document.documentElement.style.overflow = ''; if (!(e.state && e.state.sheet)) return; }
+  if (e.state && e.state.page && S.profile) showPage(e.state.page, true);
+});
 // Warn before a reload or close would lose an unsaved form or a running upload.
 window.addEventListener('beforeunload', e => {
   if (!S.user) return;

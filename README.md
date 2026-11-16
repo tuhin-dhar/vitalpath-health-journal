@@ -137,4 +137,4 @@ Anyone who has the link can open it until it expires, so send it only to the peo
 
 Libraries are loaded from public CDNs: supabase-js 2.45.4, jsPDF 2.5.1 and jsPDF-AutoTable 3.8.2.
 
-Designed by Biraj Das.
+

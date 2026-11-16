@@ -2,110 +2,261 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#123b52">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d2738">
 <meta name="referrer" content="no-referrer">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' data: blob: https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
-<title>VitalPath Health Journal | Designed by Biraj Das</title>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' data: blob: https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
+<title>VitalPath Health Journal</title>
+<link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="VitalPath">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%23123f54'/%3E%3Cpath d='M10 25h7l3.2-7 4.1 14 3.2-7H38' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
 <style>
-:root{--navy:#123047;--teal:#087f83;--bg:#f3f7f8;--ink:#172f3d;--muted:#637985;--line:#dce7ea;--green:#18794e;--amber:#9b6200;--red:#b42318}
-*{box-sizing:border-box}
+@font-face{font-family:"Inter";font-style:normal;font-weight:100 900;font-display:swap;src:url(fonts/inter-latin.woff2) format("woff2")}
+@property --p{syntax:'<number>';inherits:true;initial-value:0}
+:root{
+ --brand-900:#0d2738;--brand-800:#113449;--brand-700:#123f54;--teal:#0a8a8e;--teal-2:#14a39f;--mint:#e5f5f2;
+ --bg:#f1f6f7;--surface:#fff;--surface-2:#f7fafb;--ink:#13293a;--ink-2:#2c4a5b;--muted:#566f7c;--teal-text:#077378;--line:#e0e9ec;--line-2:#cfdde1;
+ --green:#16794c;--green-bg:#e9f7ef;--amber:#9a5f00;--amber-bg:#fff6e5;--red:#b42318;--red-bg:#fff0ee;
+ --r-lg:20px;--r-md:14px;--r-sm:11px;
+ --sh-1:0 1px 2px #0f2a3d0d,0 4px 14px #0f2a3d0a;--sh-2:0 2px 6px #0f2a3d10,0 14px 34px #0f2a3d14;
+ --ease:cubic-bezier(.2,.8,.2,1);--tabbar-h:66px;
+ --font:"Inter",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 [hidden]{display:none!important}
-body{margin:0;background:linear-gradient(180deg,#edf4f5 0,#f7f9fa 240px);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
-header{background:linear-gradient(115deg,#102c42 0%,#12475a 56%,#087f83 100%);color:white;padding:23px 18px 25px;box-shadow:0 8px 24px #102c4218}
-header .inner,main,footer,.view{max-width:1080px;margin:auto}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;color:var(--ink);font:15.5px/1.55 var(--font);min-height:100vh;
+ background:radial-gradient(1200px 500px at 85% -120px,#d6efec 0,transparent 60%),radial-gradient(900px 420px at -10% 0,#dfeef4 0,transparent 55%),var(--bg);background-attachment:fixed}
+a{color:var(--teal-text)}
+/* ── Header ── */
+header{position:relative;overflow:hidden;color:#fff;padding:22px 18px 24px;background:linear-gradient(120deg,var(--brand-900) 0%,var(--brand-700) 55%,var(--teal) 100%);box-shadow:0 10px 30px #0d27381f}
+header:before,header:after{content:"";position:absolute;border-radius:50%;filter:blur(40px);opacity:.45;pointer-events:none}
+header:before{width:340px;height:340px;right:-80px;top:-170px;background:#2fc4b8;animation:drift 18s ease-in-out infinite alternate}
+header:after{width:260px;height:260px;left:12%;bottom:-200px;background:#3c8fb8;animation:drift 22s ease-in-out infinite alternate-reverse}
+header .inner,main,footer,.view{max-width:1080px;margin:auto;position:relative}
 .brandbar{display:flex;align-items:center;gap:15px}
-.brandmark{width:56px;height:56px;display:grid;place-items:center;border:1px solid #ffffff50;border-radius:17px;background:#ffffff12;flex:none}
-.brandmark svg{width:42px;height:42px}
+.brandmark{width:54px;height:54px;display:grid;place-items:center;border:1px solid #ffffff40;border-radius:17px;background:#ffffff14;backdrop-filter:blur(6px);flex:none}
+.brandmark svg{width:40px;height:40px;overflow:visible}
+.brandmark .pulse{stroke-dasharray:60;stroke-dashoffset:60;animation:draw 1.4s .2s var(--ease) forwards}
+.brandmark .pin{animation:beat 4.5s 1.6s ease-in-out infinite;transform-origin:24px 24px}
 .brandcopy{min-width:0;flex:1}
-.brand-kicker{font-size:10px;letter-spacing:2.2px;font-weight:750;color:#bde8e6;margin-bottom:3px}
-h1{font-size:clamp(24px,4vw,32px);letter-spacing:-.8px;line-height:1.1;margin:0;font-weight:780}
-h1 span{font-weight:450;color:#d4eeee}
-header p{margin:7px 0 0;color:#d9eeee;font-size:13px}
-.brand-credit{font-size:9px;letter-spacing:1.4px;color:#c8e7e6;text-align:right;line-height:1.55;white-space:nowrap}
-.brand-credit strong{font-size:13px;letter-spacing:.2px;color:#fff}
-.userbar{display:flex;justify-content:flex-end;gap:10px;align-items:center;margin-top:10px;font-size:12px;color:#d9eeee}
-.userbar button{padding:6px 11px;font-size:12px;background:#ffffff18;color:#fff;border-color:#ffffff40}
-main{padding:20px 16px 28px;display:grid;gap:15px}
+.brand-kicker{font-size:10.5px;letter-spacing:2.4px;font-weight:700;color:#bfeee9;margin-bottom:3px}
+h1{font-size:clamp(23px,4vw,32px);letter-spacing:-.7px;line-height:1.1;margin:0;font-weight:800}
+h1 span{font-weight:400;color:#d3f0ee}
+header p{margin:7px 0 0;color:#d6eeee;font-size:13.5px}
+.userbar{display:flex;justify-content:flex-end;gap:10px;align-items:center;margin-top:12px;font-size:12.5px;color:#d6eeee}
+.userbar button{padding:7px 14px;font-size:13px;background:#ffffff1a;color:#fff;border-color:#ffffff40;min-height:44px;flex:none}
+#userEmail{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#authLinks a{display:inline-flex;align-items:center;min-height:44px;padding:0 6px;font-weight:600}
+.userbar button:hover{background:#ffffff2a}
+/* ── Layout ── */
+main{padding:18px 16px 30px;display:grid;gap:16px}
 .view{padding:20px 16px 28px}
-.card{background:#fff;border:1px solid #e1eaed;border-radius:17px;padding:18px;box-shadow:0 5px 18px #163b4b0b;min-width:0}
-.card.inset{background:#f8fbfc;box-shadow:none;margin-top:10px}
-h2{font-size:18px;letter-spacing:-.2px;margin:0 0 12px;color:#16384a}
-h3{font-size:15px;margin:14px 0 6px;color:#16384a}
-.muted,.sub{color:var(--muted);font-size:13px}
-nav{display:flex;gap:7px;overflow:auto;padding:5px 1px 11px;scrollbar-width:thin}
-.tab,button,.btn{border:1px solid #dce7e9;border-radius:11px;padding:10px 14px;font:650 13px system-ui,sans-serif;cursor:pointer;background:#fff;color:#244657;white-space:nowrap;transition:background .15s,border-color .15s,transform .15s;text-decoration:none;display:inline-block}
-.tab:hover,button:hover,.btn:hover{border-color:#83babb;transform:translateY(-1px)}
-.tab.active,button.primary,.btn.primary{background:#123f54;border-color:#123f54;color:white;box-shadow:0 3px 9px #123f5420}
-button.danger{background:#fff0ef;color:#b42318;border-color:#f0d9d6}
-button.small{padding:8px 12px;font-size:13px;min-height:44px;min-width:44px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-lg);padding:20px;box-shadow:var(--sh-1);min-width:0;transition:box-shadow .25s var(--ease),transform .25s var(--ease)}
+@media(hover:hover){.page>.card:hover,.page>.grid>.card:hover{box-shadow:var(--sh-2)}}
+.card.inset{background:var(--surface-2);box-shadow:none;margin-top:10px;border-radius:var(--r-md)}
+h2{font-size:18.5px;letter-spacing:-.3px;margin:0 0 12px;color:var(--brand-800);display:flex;align-items:center;gap:9px}
+h2:before{content:"";width:4px;height:18px;border-radius:4px;background:linear-gradient(var(--teal-2),var(--teal));flex:none}
+h3{font-size:15px;margin:16px 0 8px;color:var(--brand-800)}
+.muted,.sub{color:var(--muted);font-size:13.5px}
+.sub{letter-spacing:.2px}
+.page{display:none}.page.active{display:grid;gap:16px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+/* ── Tab bar (desktop: sticky pills; phone: bottom bar) ── */
+nav#tabbar{position:sticky;top:8px;z-index:15;display:flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:8px;margin:0 -4px;border-radius:18px;background:#ffffffc7;backdrop-filter:saturate(1.6) blur(14px);-webkit-backdrop-filter:saturate(1.6) blur(14px);border:1px solid #ffffffb0;box-shadow:var(--sh-1);scrollbar-width:none}
+nav#tabbar::-webkit-scrollbar{display:none}
+.tab{display:inline-flex;align-items:center;gap:7px;border:0;background:transparent;color:var(--ink-2);border-radius:12px;padding:10px 11px;font:600 13.5px var(--font);cursor:pointer;white-space:nowrap;position:relative;transition:background .2s,color .2s}
+.tab svg{width:19px;height:19px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tab:hover{background:#eef5f6}
+.tab.active{background:var(--brand-700);color:#fff;box-shadow:0 4px 12px #123f5433}
+.tab .short{display:none}
+.tab.more{display:none}
+/* ── Buttons ── */
+button,.btn{border:1px solid var(--line-2);border-radius:12px;padding:11px 16px;font:600 14px var(--font);cursor:pointer;background:#fff;color:var(--ink-2);white-space:nowrap;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:44px;transition:background .18s,border-color .18s,box-shadow .18s,transform .12s var(--ease)}
+button:hover,.btn:hover{border-color:#8cc3c2;background:#f6fbfb}
+button:active,.btn:active,.tab:active{transform:scale(.97)}
+button.primary,.btn.primary{background:linear-gradient(135deg,var(--brand-700),#16586f);border-color:transparent;color:#fff;box-shadow:0 6px 16px #123f5433}
+button.primary:hover,.btn.primary:hover{background:linear-gradient(135deg,#0f3549,#14506a)}
+button.danger{background:var(--red-bg);color:var(--red);border-color:#f2d6d2}
+button.danger:hover{background:#ffe5e1}
+button.small{padding:8px 13px;font-size:13.5px;min-height:44px;min-width:44px}
 button:disabled{opacity:.55;cursor:wait;transform:none}
-.page{display:none}.page.active{display:grid;gap:15px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-label{display:block;font-weight:650;font-size:12px;margin:11px 0 5px;color:#385362}
-input,select,textarea{width:100%;min-height:45px;padding:10px 12px;border:1px solid #cbdadd;border-radius:10px;background:#fcfefe;color:var(--ink);font:inherit;outline:none}
-input[type=checkbox]{width:auto;min-height:auto}
-input:focus,select:focus,textarea:focus{border-color:#16868a;box-shadow:0 0 0 3px #16868a19}
-textarea{min-height:75px}
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.fields3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
-.metric{font-size:29px;font-weight:780;letter-spacing:-.6px}
-.status{font-weight:750;margin-top:4px}.good{color:var(--green)}.warn{color:var(--amber)}.bad{color:var(--red)}
-.gaugeRow{display:flex;align-items:center;gap:14px;margin-top:12px}
-.gauge{width:76px;height:76px;border-radius:50%;background:conic-gradient(var(--g,#18794e) calc(var(--p,0)*1%),#e8eff0 0);display:grid;place-items:center;flex:none}
-.gauge:before{content:"";grid-area:1/1;width:58px;height:58px;background:white;border-radius:50%}
-.gauge b{grid-area:1/1;z-index:1;font-size:11px;text-align:center}
-.detail{flex:1;min-width:0}.detail .metric{font-size:26px}.detail small{color:var(--muted)}
-.alert{padding:12px 14px;border-radius:11px;margin-top:11px;font-size:13px;background:#edf5f8;border:1px solid #d9e9ed;border-left:4px solid #287a91}
-.alert.good{background:#edf8f1;border-color:#d7ebdf;border-left-color:var(--green)}
-.alert.warn{background:#fff8e9;border-color:#f1e4c6;border-left-color:#c17b12}
-.alert.bad{background:#fff2f0;border-color:#f0d9d6;border-left-color:var(--red)}
-.gate{position:fixed;inset:0;z-index:20;overflow:auto;background:linear-gradient(160deg,#edf5f6,#f7f9fa);padding:15px}
-.gateBox{max-width:690px;margin:4vh auto;background:white;padding:24px;border:1px solid #dce7ea;border-radius:20px;box-shadow:0 18px 55px #15394a18}
-.gateBox.narrow{max-width:440px}
-.gateBox h2{font-size:23px;margin-top:9px}.gateBox p{color:var(--muted);font-size:14px}
-.gate-brand{font-size:11px;letter-spacing:2px;font-weight:800;color:#087f83}.gate-brand span{font-weight:500;color:#53717c}
-table{border-collapse:collapse;width:100%;font-size:13px}td,th{text-align:left;border-bottom:1px solid var(--line);padding:8px;vertical-align:top}th{color:#47616e;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
-.scroll{overflow-x:auto}
-canvas{width:100%;height:auto;display:block}
-.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:6px}.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
-details.panel{border:1px solid var(--line);border-radius:12px;margin-top:10px;background:#fbfdfd}
-details.panel summary{cursor:pointer;padding:11px 14px;font-weight:700;color:#16384a;list-style-position:inside}
-details.panel .body{padding:0 14px 12px}
-.testRow{display:grid;grid-template-columns:minmax(150px,1.6fr) 1fr 1.4fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}
+button:focus-visible,.btn:focus-visible,.tab:focus-visible,a:focus-visible,summary:focus-visible{outline:3px solid var(--brand-700);outline-offset:2px}
+input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--brand-700);outline-offset:1px}
+/* ── Forms ── */
+label{display:block;font-weight:600;font-size:13px;margin:12px 0 6px;color:#36525f}
+input,select,textarea{width:100%;min-height:48px;padding:11px 13px;border:1px solid var(--line-2);border-radius:12px;background:#fbfdfd;color:var(--ink);font:16px var(--font);outline:none;transition:border-color .18s,box-shadow .18s,background .18s;-webkit-appearance:none;appearance:none}
+select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1.5l5 5 5-5' fill='none' stroke='%235e7683' stroke-width='1.8' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:38px}
+input[type=checkbox]{width:20px;height:20px;min-height:auto;-webkit-appearance:auto;appearance:auto;accent-color:var(--teal);flex:none}
+input[type=file]{padding:10px;background:#fff;border-style:dashed}
+input:focus,select:focus,textarea:focus{border-color:var(--teal);background:#fff;box-shadow:0 0 0 4px #14a39f22}
+textarea{min-height:84px;resize:vertical}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
+.fields3{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 14px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px;align-items:center}
+/* ── Home ── */
+.hero{background:linear-gradient(135deg,#ffffff 0%,#f1faf8 100%);border-color:#d8ece8}
+.greeting{font-size:13.5px;color:var(--teal-text);font-weight:600;letter-spacing:.2px}
+.metric{font-size:30px;font-weight:800;letter-spacing:-.8px;line-height:1.15}
+.quick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.quick button{flex-direction:column;gap:6px;min-height:78px;padding:12px 6px;border-radius:16px;font-size:13px;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-1);white-space:normal;text-align:center;line-height:1.2}
+.quick button svg{width:24px;height:24px;stroke:var(--teal);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.quick button:hover{border-color:#a9d6d3;box-shadow:var(--sh-2)}
+.emergency{border:1.5px solid #f1c6c0;background:linear-gradient(135deg,#fff 0%,#fff5f3 100%)}
+.emergency h2{color:var(--red)}.emergency h2:before{background:var(--red)}
+.calls{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.call{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:16px;background:#fff;border:1px solid #f3d2cd;text-decoration:none;color:var(--ink);transition:transform .15s var(--ease),box-shadow .2s}
+.call:hover{box-shadow:0 8px 20px #b4231820}
+.call:active{transform:scale(.98)}
+.call .ic{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;background:var(--red);color:#fff;flex:none;box-shadow:0 6px 14px #b4231840}
+.call .ic svg{width:22px;height:22px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.call b{display:block;font-size:24px;line-height:1.1;color:var(--red);letter-spacing:-.4px}
+.call small{color:var(--muted);font-size:12px}
+.status{font-weight:700;margin-top:4px}.good{color:var(--green)}.warn{color:var(--amber)}.bad{color:var(--red)}
+.gaugeRow{display:flex;align-items:center;gap:16px;margin-top:12px}
+.page.active .gauge{animation:gfill 1.1s .2s var(--ease) both}
+.gauge{--p:0;width:84px;height:84px;border-radius:50%;background:conic-gradient(var(--g,#16794c) calc(var(--p)*1%),#e6eef0 0);display:grid;place-items:center;flex:none;box-shadow:inset 0 0 0 1px #0f2a3d08}
+.gauge:before{content:"";grid-area:1/1;width:64px;height:64px;background:#fff;border-radius:50%;box-shadow:0 2px 8px #0f2a3d14}
+.gauge b{grid-area:1/1;z-index:1;font-size:11.5px;letter-spacing:.5px;color:var(--muted)}
+.detail{flex:1;min-width:0}.detail .metric{font-size:28px}.detail small{color:var(--muted)}
+.labLatest{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.labLatest div{border:1px solid var(--line);border-radius:14px;padding:11px 13px;background:var(--surface-2);transition:transform .2s var(--ease)}
+.labLatest b{display:block;font-size:19px;margin:2px 0}
+/* ── Alerts, chips, tables ── */
+.alert{padding:13px 15px;border-radius:14px;margin-top:12px;font-size:14px;background:#edf5f8;border:1px solid #d9e9ed;border-left:4px solid #287a91;animation:pop .35s var(--ease)}
+.alert.good{background:var(--green-bg);border-color:#d3ebdd;border-left-color:var(--green)}
+.alert.warn{background:var(--amber-bg);border-color:#f0e1c0;border-left-color:#c17b12}
+.alert.bad{background:var(--red-bg);border-color:#f0d6d2;border-left-color:var(--red)}
+.chip{display:inline-block;border-radius:999px;padding:2px 10px;font-size:11.5px;font-weight:700;background:var(--green-bg);color:var(--green)}
+.chip.HIGH{background:var(--red-bg);color:var(--red)}.chip.LOW{background:var(--amber-bg);color:var(--amber)}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:14px}
+td,th{text-align:left;border-bottom:1px solid var(--line);padding:10px 9px;vertical-align:middle}
+th{color:#4a6572;font-size:11.5px;text-transform:uppercase;letter-spacing:.6px;font-weight:700;background:var(--surface-2)}
+th:first-child{border-top-left-radius:10px}th:last-child{border-top-right-radius:10px}
+tr:last-child td{border-bottom:0}
+tbody tr,table tr{transition:background .15s}
+@media(hover:hover){tr:hover td{background:#f8fbfc}}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+canvas{width:100%;display:block;animation:reveal 1s .15s var(--ease) both}
+.legend{display:flex;gap:16px;font-size:12.5px;color:var(--muted);margin-top:8px}.legend i{display:inline-block;width:14px;height:4px;border-radius:2px;margin-right:6px;vertical-align:middle}
+/* ── Lab form ── */
+details.panel{border:1px solid var(--line);border-radius:14px;margin-top:10px;background:var(--surface-2);overflow:hidden;transition:box-shadow .2s}
+details.panel[open]{background:#fff;box-shadow:var(--sh-1)}
+details.panel summary{cursor:pointer;padding:14px 16px;font-weight:700;color:var(--brand-800);list-style:none;display:flex;align-items:center;justify-content:space-between;min-height:50px}
+details.panel summary::-webkit-details-marker{display:none}
+details.panel summary:after{content:"";width:9px;height:9px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg) translateY(-3px);transition:transform .25s var(--ease)}
+details.panel[open] summary:after{transform:rotate(225deg) translateY(-3px)}
+details.panel .body{padding:0 16px 14px;animation:fadeIn .3s var(--ease)}
+.testRow{display:grid;grid-template-columns:minmax(150px,1.6fr) 1fr 1.4fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}
 .testRow:last-child{border-bottom:0}
-.testRow .tname{font-size:13px;font-weight:600}.testRow .tname small{display:block;color:var(--muted);font-weight:400}
-.testRow input{min-height:38px;padding:7px 9px}
-.range{display:flex;gap:4px;align-items:center}.range span{color:var(--muted)}
-.chip{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:750;background:#edf8f1;color:var(--green)}
-.chip.HIGH{background:#fff2f0;color:var(--red)}.chip.LOW{background:#fff8e9;color:var(--amber)}
-.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
-.thumb{position:relative;width:110px;height:110px;border-radius:10px;border:1px solid var(--line);overflow:hidden;background:#eef4f5;display:grid;place-items:center;font-size:11px;color:var(--muted);text-align:center}
-.thumb img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
-.thumb button{position:absolute;top:3px;right:3px;padding:0;width:40px;height:40px;font-size:16px;border-radius:9px}
-.labLatest{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
-.labLatest div{border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:#fbfdfd}
-.labLatest b{display:block;font-size:18px}
-.banner{background:#fff8e9;border-bottom:1px solid #f1e4c6;color:#7a4d00;text-align:center;font-size:13px;padding:8px}
-.lightbox{position:fixed;inset:0;background:#0b1d28e6;z-index:40;display:grid;place-items:center;padding:16px}
-.lightbox img{max-width:100%;max-height:88vh;border-radius:8px;background:#fff}
-.lightbox button{position:absolute;top:14px;right:14px}
-.linkbox{display:flex;gap:6px}.linkbox input{min-height:40px;font-size:12px}
-.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#123f54;color:#fff;padding:10px 16px;border-radius:11px;font-size:13px;z-index:50;box-shadow:0 8px 24px #0003;max-width:calc(100% - 32px)}
-footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
-@media(max-width:620px){.brandbar{gap:10px}.brandmark{width:46px;height:46px;border-radius:14px}.brandmark svg{width:35px;height:35px}.brand-credit{font-size:8px}.brand-credit strong{font-size:11px}.grid,.fields,.fields3{grid-template-columns:1fr}main,.view{padding:12px 10px 22px}.card{padding:15px}.gateBox{margin:1vh auto;padding:18px}h1{font-size:24px}.testRow{grid-template-columns:1fr 1fr}.testRow .range{grid-column:1/-1}}
-@media print{header,nav,footer,.actions,.banner{display:none!important}.card{box-shadow:none;break-inside:avoid}}
+.testRow .tname{font-size:14px;font-weight:600}.testRow .tname small{display:block;color:var(--muted);font-weight:400;font-size:12px}
+.testRow input{min-height:44px;padding:9px 11px}
+.range{display:flex;gap:5px;align-items:center}.range span{color:var(--muted);font-size:13px}
+.thumbs{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.thumb{position:relative;width:110px;height:110px;border-radius:14px;border:1px solid var(--line);overflow:hidden;background:#eef4f5;display:grid;place-items:center;font-size:12px;color:var(--muted);text-align:center;animation:pop .3s var(--ease)}
+.thumb img{width:100%;height:100%;object-fit:cover;cursor:zoom-in;transition:transform .3s var(--ease)}
+@media(hover:hover){.thumb:hover img{transform:scale(1.05)}}
+.thumb button{position:absolute;top:4px;right:4px;padding:0;width:40px;height:40px;min-height:40px;font-size:16px;border-radius:12px}
+/* ── Overlays ── */
+.gate{position:fixed;inset:0;z-index:30;overflow:auto;padding:16px;background:radial-gradient(900px 420px at 90% -100px,#cfeee9 0,transparent 60%),radial-gradient(700px 400px at 0 100%,#dbe9f3 0,transparent 60%),#f2f7f8;animation:fadeIn .3s ease}
+.gateBox{max-width:690px;margin:5vh auto;background:#fff;padding:28px;border:1px solid var(--line);border-radius:24px;box-shadow:0 24px 60px #0f2a3d1f;animation:rise .5s var(--ease)}
+.gateBox.narrow{max-width:440px}
+.gateBox h2{font-size:24px;margin-top:10px}.gateBox h2:before{display:none}.gateBox p{color:var(--muted);font-size:14.5px}
+.gate-brand{font-size:11.5px;letter-spacing:2.2px;font-weight:800;color:var(--teal-text)}.gate-brand span{font-weight:500;color:#53717c}
+.gateBox .actions button{flex:1}
+.banner{background:var(--amber-bg);border-bottom:1px solid #f0e1c0;color:#7a4d00;text-align:center;font-size:13px;padding:9px}
+.lightbox{position:fixed;inset:0;background:#08161fe8;z-index:60;display:grid;place-items:center;padding:16px;animation:fadeIn .25s ease;backdrop-filter:blur(4px)}
+.lightbox img{max-width:100%;max-height:86vh;border-radius:12px;background:#fff;animation:zoomIn .35s var(--ease)}
+.lightbox button{position:absolute;top:calc(14px + env(safe-area-inset-top));right:14px}
+.linkbox{display:flex;gap:8px}.linkbox input{min-height:44px;font-size:14px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--brand-800);color:#fff;padding:12px 18px;border-radius:14px;font-size:14px;z-index:70;box-shadow:0 14px 34px #0d273840;max-width:calc(100% - 32px);animation:toastIn .35s var(--ease)}
+.sheet{position:fixed;inset:0;z-index:40;overscroll-behavior:contain;display:flex;align-items:flex-end;background:#0d27384d;animation:fadeIn .2s ease}
+.sheet .panel{width:100%;background:#fff;border-radius:24px 24px 0 0;padding:10px 14px calc(16px + env(safe-area-inset-bottom));box-shadow:0 -10px 40px #0d273830;animation:sheetUp .35s var(--ease)}
+.sheet .grab{width:42px;height:5px;border-radius:5px;background:#d3dfe3;margin:4px auto 12px}
+.sheet .tab{display:flex;width:100%;padding:15px 14px;font-size:16px;border-radius:14px;gap:14px}
+.sheet .tab svg{width:22px;height:22px}
+.loader{position:fixed;top:0;left:0;right:0;height:3px;z-index:80;overflow:hidden;background:#14a39f22}
+.loader:before{content:"";position:absolute;inset:0;width:40%;background:linear-gradient(90deg,transparent,var(--teal-2),transparent);animation:loading 1.1s ease-in-out infinite}
+footer{padding:8px 16px 28px;color:#4f6672;font-size:12px;text-align:center}
+/* ── Entrance animation: each card rises in when a page opens ── */
+.page.active>*{animation:rise .5s var(--ease) both}
+.page.active>*:nth-child(2){animation-delay:.05s}.page.active>*:nth-child(3){animation-delay:.1s}.page.active>*:nth-child(4){animation-delay:.15s}
+.page.active>*:nth-child(5){animation-delay:.2s}.page.active>*:nth-child(6){animation-delay:.25s}.page.active>*:nth-child(n+7){animation-delay:.3s}
+@keyframes gfill{from{--p:0}}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes pop{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+@keyframes zoomIn{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+@keyframes toastIn{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+@keyframes reveal{from{clip-path:inset(0 100% 0 0)}to{clip-path:inset(0 0 0 0)}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes beat{0%,100%{transform:scale(1)}8%{transform:scale(1.07)}16%{transform:scale(1)}24%{transform:scale(1.05)}32%{transform:scale(1)}}
+@keyframes drift{from{transform:translate(0,0)}to{transform:translate(-60px,40px)}}
+@keyframes loading{from{transform:translateX(-100%)}to{transform:translateX(260%)}}
+/* ── Phones ── */
+@media(max-width:720px){
+ body{padding-bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 8px);font-size:16px}
+ header{padding:calc(14px + env(safe-area-inset-top)) 16px 16px}
+ header p,.brand-kicker{display:none}
+ .brandbar{gap:12px}.brandmark{width:44px;height:44px;border-radius:14px}.brandmark svg{width:32px;height:32px}
+ h1{font-size:22px}
+ .userbar{margin-top:8px}
+ main{padding:14px 12px 18px;gap:14px}.view{padding:14px 12px 22px}
+ .page.active{gap:14px}
+ .grid,.fields,.fields3{grid-template-columns:1fr}
+ .card{padding:17px;border-radius:18px}
+ nav#tabbar{position:fixed;top:auto;left:0;right:0;bottom:0;margin:0;border-radius:20px 20px 0 0;padding:6px 6px calc(6px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(5,1fr);gap:2px;overflow:visible;background:#ffffffeb;border:0;border-top:1px solid var(--line);box-shadow:0 -6px 24px #0d27381a}
+ nav#tabbar .tab{flex-direction:column;gap:3px;padding:7px 2px;font-size:11.5px;font-weight:600;border-radius:14px;min-height:54px;justify-content:center;color:#58717d}
+ nav#tabbar .tab svg{width:23px;height:23px}
+ nav#tabbar .tab.active{background:var(--mint);color:var(--brand-700);box-shadow:none}
+ nav#tabbar .tab.active svg{stroke:var(--teal)}
+ nav#tabbar .tab .long{display:none}nav#tabbar .tab .short{display:inline}
+ nav#tabbar .tab.secondary{display:none}
+ nav#tabbar .tab.more{display:flex}
+ .actions>button,.actions>.btn{flex:1 1 auto}
+ .quick{grid-template-columns:repeat(4,1fr);gap:8px}
+ .quick button{min-height:74px;font-size:12px;padding:10px 4px}
+ .calls{gap:10px}.call{padding:10px;gap:10px}.call .ic{width:40px;height:40px;border-radius:12px}.call b{font-size:22px}
+ .gateBox{margin:2vh auto;padding:22px 18px;border-radius:22px}
+ .testRow{grid-template-columns:1fr;gap:8px}
+ .range{flex-wrap:wrap}
+ .range input{flex:1 1 0;min-width:0;padding:9px 10px}
+ .testRow .range>span:last-child{flex-basis:100%;font-size:12px}
+ .otherRow>div{display:flex;gap:6px}
+ .actions>button,.actions>.btn,.card>button{white-space:normal;text-align:center;min-width:0}
+ body.typing nav#tabbar{display:none}
+ body.typing{padding-bottom:16px}
+ .toast{bottom:calc(var(--tabbar-h) + env(safe-area-inset-bottom) + 14px)}
+ /* Tables become stacked cards */
+ table.stack,table.stack tbody,table.stack tr,table.stack td{display:block;width:100%}
+ table.stack tr:has(th){display:none}
+ table.stack tr{border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:10px;background:#fff;box-shadow:var(--sh-1)}
+ table.stack td{border:0;padding:6px 0;display:flex;justify-content:space-between;gap:14px;text-align:right;align-items:center}
+ table.stack td:before{content:attr(data-label);color:var(--muted);font-size:12.5px;font-weight:600;text-align:left;flex:none;max-width:42%}
+ table.stack td>.v{min-width:0;text-align:right;overflow-wrap:anywhere}
+ table.stack td.acts{justify-content:flex-end;gap:8px;padding-top:10px}
+ table.stack td.acts:before{display:none}
+ footer{padding-bottom:12px}
+}
+@media(max-width:380px){.quick{grid-template-columns:repeat(2,1fr)}.calls{grid-template-columns:1fr}}
+@media(min-width:721px){.sheet{display:none!important}}
+@media print{header,nav,footer,.actions,.banner,.quick{display:none!important}.card{box-shadow:none;break-inside:avoid}body{background:#fff}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.001ms!important;animation-iteration-count:1!important;animation-delay:0s!important;transition-duration:.001ms!important;scroll-behavior:auto!important}.brandmark .pulse{stroke-dashoffset:0}}
 </style>
 </head>
 <body>
 <div id="demoBanner" class="banner" hidden>Demo mode — accounts and records stay in this browser only. Do not enter real health data here.</div>
 <header>
  <div class="inner brandbar">
-  <div class="brandmark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 4.5c-7.8 0-14 6.2-14 14 0 10.1 14 25 14 25s14-14.9 14-25c0-7.8-6.2-14-14-14Z" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M12.5 22.5h7l3.2-7 4.1 14 3.2-7h5.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="brandmark" aria-hidden="true"><svg viewBox="0 0 48 48"><path class="pin" d="M24 4.5c-7.8 0-14 6.2-14 14 0 10.1 14 25 14 25s14-14.9 14-25c0-7.8-6.2-14-14-14Z" fill="none" stroke="currentColor" stroke-width="2.6"/><path class="pulse" d="M12.5 22.5h7l3.2-7 4.1 14 3.2-7h5.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
   <div class="brandcopy"><div class="brand-kicker">PERSONAL HEALTH COMPANION</div><h1>VitalPath <span>Health Journal</span></h1><p>One place for your readings, lab reports, medical history and care contacts.</p></div>
-  <div class="brand-credit">DESIGNED BY<br><strong>Biraj Das</strong></div>
  </div>
  <div class="inner userbar" id="userbar" hidden><span id="userEmail"></span><button data-act="signOut">Sign out</button></div>
 </header>
@@ -128,7 +279,7 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
    <div id="authEmailWrap"><label for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="email"></div>
    <div id="authPassWrap"><label for="authPass">Password</label><input id="authPass" type="password" autocomplete="current-password" minlength="8"></div>
    <div id="authPass2Wrap" hidden><label for="authPass2">Repeat password</label><input id="authPass2" type="password" autocomplete="new-password" minlength="8"></div>
-   <div id="authMsg"></div>
+   <div id="authMsg" role="alert"></div>
    <div class="actions"><button class="primary" id="authSubmit" type="submit">Sign in</button></div>
   </form>
   <p class="muted" id="authLinks" style="margin-top:16px">
@@ -154,7 +305,7 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
    <div><label for="pSugarTarget">Doctor's glucose target (optional)</label><input id="pSugarTarget" placeholder="As advised by doctor"></div>
   </div>
   <div class="alert">Optional profile details do not alter clinical thresholds. Enter personal targets only if your treating doctor has given them.</div>
-  <div id="profileMsg"></div>
+  <div id="profileMsg" aria-live="polite"></div>
   <div class="actions"><button class="primary" data-act="saveProfile">Save profile and continue</button><button id="profileCancel" data-act="cancelProfile" hidden>Cancel</button></div>
  </div>
 </div>
@@ -164,14 +315,24 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
  <div id="shareBody"></div>
 </div>
 
+<div id="loader" class="loader" hidden></div>
 <main id="app" hidden>
-<nav>
- <button class="tab active" data-page="home">Home</button><button class="tab" data-page="bp">Record BP</button><button class="tab" data-page="glucose">Record glucose</button><button class="tab" data-page="labs">Lab reports</button><button class="tab" data-page="history">History & charts</button><button class="tab" data-page="medical">Medical history</button><button class="tab" data-page="share">Share & export</button><button class="tab" data-page="settings">Profile & backup</button>
+<nav id="tabbar" aria-label="Sections">
+ <button class="tab active" data-page="home" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h5v-6h4v6h5V9.5"/></svg><span class="long">Home</span><span class="short">Home</span></button>
+ <button class="tab" data-page="bp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.6a5.5 5.5 0 0 0-9.3-3.9L12 5.2l.5-.5a5.5 5.5 0 1 1 7.8 7.8L12 20.8 3.7 12.5A5.5 5.5 0 0 1 11.5 4.7"/><path d="M3 12h4l2-3 3 6 2-3h3"/></svg><span class="long">Record BP</span><span class="short">BP</span></button>
+ <button class="tab" data-page="glucose"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6.5 7.2 6.5 11.8a6.5 6.5 0 0 1-13 0C5.5 9.9 12 2.7 12 2.7Z"/><path d="M9.5 15a2.6 2.6 0 0 0 2.5 2.5"/></svg><span class="long">Record sugar</span><span class="short">Sugar</span></button>
+ <button class="tab" data-page="labs"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6.5L4.6 18.4A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.4-2.6L14 9.5V3"/><path d="M7.5 15h9"/></svg><span class="long">Lab reports</span><span class="short">Labs</span></button>
+ <button class="tab secondary" data-page="history"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><span class="long">History</span><span class="short">History</span></button>
+ <button class="tab secondary" data-page="medical"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M12 9v6M9 12h6"/></svg><span class="long">Medical</span><span class="short">Medical</span></button>
+ <button class="tab secondary" data-page="share"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg><span class="long">Share</span><span class="short">Share</span></button>
+ <button class="tab secondary" data-page="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="long">Profile</span><span class="short">Profile</span></button>
+ <button class="tab more" id="moreTab" data-act="openMore" aria-haspopup="dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></svg><span class="short">More</span></button>
 </nav>
 
 <section id="home" class="page active">
- <div class="card" style="border:2px solid #b42318"><h2 style="color:#b42318">Emergency help</h2><div class="grid"><div><div class="sub">AMBULANCE</div><div class="metric"><a id="homeAmbulance" href="tel:108" style="color:#b42318;text-decoration:none">108</a></div><small class="muted">Ambulance service (where available)</small></div><div><div class="sub">NATIONAL EMERGENCY</div><div class="metric"><a id="homeEmergency" href="tel:112" style="color:#b42318;text-decoration:none">112</a></div><small class="muted">India emergency response number</small></div></div><div class="sub" id="homeEmergencyContact" style="margin-top:8px"></div><div class="sub" id="homeEmergencyNote" style="margin-top:8px">Confirm local ambulance availability and numbers in your area.</div><p class="muted">Chest pain, severe breathlessness, fainting, new weakness or numbness, confusion, difficulty speaking or sudden vision loss require emergency medical help. Do not wait for this application.</p></div>
- <div class="card"><div class="sub">PERSONAL HEALTH PROFILE</div><div class="metric" id="homeName">—</div><div class="sub" id="homeMeta"></div><div class="sub" id="homeExtra" style="margin-top:7px"></div><div class="actions"><button data-act="editProfile">Edit personal details</button></div></div>
+ <div class="card hero"><div class="greeting" id="homeGreeting">Welcome</div><div class="metric" id="homeName">—</div><div class="sub" id="homeMeta"></div><div class="sub" id="homeExtra" style="margin-top:6px"></div>
+  <div class="quick"><button data-act="go" data-page="bp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 8.6a5.5 5.5 0 0 0-9.3-3.9L12 5.2l.5-.5a5.5 5.5 0 1 1 7.8 7.8L12 20.8 3.7 12.5A5.5 5.5 0 0 1 11.5 4.7"/><path d="M3 12h4l2-3 3 6 2-3h3"/></svg>Add BP</button><button data-act="go" data-page="glucose"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.7s6.5 7.2 6.5 11.8a6.5 6.5 0 0 1-13 0C5.5 9.9 12 2.7 12 2.7Z"/><path d="M9.5 15a2.6 2.6 0 0 0 2.5 2.5"/></svg>Add sugar</button><button data-act="go" data-page="labs"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6.5L4.6 18.4A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.4-2.6L14 9.5V3"/><path d="M7.5 15h9"/></svg>Add lab report</button><button data-act="go" data-page="share"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg>Share report</button></div></div>
+ <div class="card emergency"><h2>Emergency help</h2><div class="calls"><a class="call" id="homeAmbulanceCall" href="tel:108"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg></span><span><b id="homeAmbulance">108</b><small>Ambulance</small></span></a><a class="call" id="homeEmergencyCall" href="tel:112"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg></span><span><b id="homeEmergency">112</b><small>National emergency</small></span></a></div><div class="sub" id="homeEmergencyContact" style="margin-top:10px"></div><div class="sub" id="homeEmergencyNote" style="margin-top:6px">Confirm local ambulance availability and numbers in your area.</div><p class="muted" style="margin-bottom:0">Chest pain, severe breathlessness, fainting, new weakness or numbness, confusion, difficulty speaking or sudden vision loss need emergency help. Do not wait for this app.</p><div class="actions"><button data-act="editProfile">Edit personal details</button></div></div>
  <div class="grid">
   <div class="card"><div class="sub">LATEST BLOOD PRESSURE</div><div class="gaugeRow"><div class="gauge" id="bpGauge"><b>BP</b></div><div class="detail"><div class="metric" id="bpValue">—</div><div class="status" id="bpStatus">Awaiting reading</div><small id="bpDate">No reading yet</small></div></div><div class="sub" id="bpSummary" style="margin-top:10px">Record a reading to see interpretation.</div></div>
   <div class="card"><div class="sub">LATEST BLOOD GLUCOSE</div><div class="gaugeRow"><div class="gauge" id="glucoseGauge"><b>GLU</b></div><div class="detail"><div class="metric" id="glucoseValue">—</div><div class="status" id="glucoseStatus">Awaiting reading</div><small id="glucoseDate">No reading yet</small></div></div><div class="sub" id="glucoseSummary" style="margin-top:10px">Record a reading to see interpretation.</div></div>
@@ -191,7 +352,7 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
  <div><label for="pulse">Pulse (optional)</label><input id="pulse" type="number" inputmode="numeric" min="20" max="250"></div>
  <div><label for="bpContext">Context</label><select id="bpContext"><option>Routine reading</option><option>Before medication</option><option>After medication</option><option>Feeling unwell</option><option>After exercise</option></select></div></div>
  <label for="bpNote">Notes (optional)</label><textarea id="bpNote"></textarea>
- <div class="actions"><button class="primary" data-act="saveBP" id="bpSave">Save BP reading</button><button data-act="cancelEdit" data-form="bp" id="bpCancel" hidden>Cancel editing</button></div><div id="bpResult"></div></div>
+ <div class="actions"><button class="primary" data-act="saveBP" id="bpSave">Save BP reading</button><button data-act="cancelEdit" data-form="bp" id="bpCancel" hidden>Cancel editing</button></div><div id="bpResult" aria-live="polite"></div></div>
  <div class="card muted">For home BP readings, sit quietly for 5 minutes, keep feet flat and back supported, and position the cuffed arm at heart level. Avoid caffeine, smoking and exercise for 30 minutes beforehand. Follow your clinician's measurement instructions.</div>
 </section>
 
@@ -202,7 +363,7 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
  <div><label for="glValue">Result</label><input id="glValue" type="number" inputmode="decimal" min=".1" step=".1" placeholder="e.g. 112"></div>
  <div><label for="glUnit">Unit</label><select id="glUnit"><option>mg/dL</option><option>mmol/L</option><option>% (HbA1c)</option></select></div></div>
  <label for="glNote">Notes / meal timing (optional)</label><textarea id="glNote"></textarea>
- <div class="actions"><button class="primary" data-act="saveGlucose" id="glSave">Save glucose reading</button><button data-act="cancelEdit" data-form="glucose" id="glCancel" hidden>Cancel editing</button></div><div id="glResult"></div></div>
+ <div class="actions"><button class="primary" data-act="saveGlucose" id="glSave">Save glucose reading</button><button data-act="cancelEdit" data-form="glucose" id="glCancel" hidden>Cancel editing</button></div><div id="glResult" aria-live="polite"></div></div>
  <div class="card muted">Fasting, pre-meal, post-meal, random glucose and HbA1c are different measurements. HbA1c shows your average sugar over roughly the last 3 months and comes from a laboratory test — you can also record it with the full report under Lab reports. A home meter reading cannot by itself diagnose diabetes.</div>
 </section>
 
@@ -223,7 +384,7 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
   <div class="thumbs" id="lrExisting"></div>
   <label for="lrNotes">Notes (optional)</label><textarea id="lrNotes" placeholder="Doctor's comments, fasting status, medicines at the time, etc."></textarea>
   <div class="actions"><button class="primary" data-act="saveLabReport" id="lrSave">Save lab report</button><button data-act="cancelEdit" data-form="labs" id="lrCancel" hidden>Cancel editing</button></div>
-  <div id="lrResult"></div>
+  <div id="lrResult" aria-live="polite"></div>
  </div>
  <div class="card"><h2>Lab trend</h2><label for="labTrendTest">Test</label><select id="labTrendTest"></select><canvas id="labChart" width="900" height="230"></canvas><div class="sub" id="labTrendNote"></div></div>
  <div class="card"><h2>Saved lab reports</h2><div id="labReportList"></div></div>
@@ -250,7 +411,7 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
   </div>
   <label for="mhNotes">Additional notes (optional)</label><textarea id="mhNotes" placeholder="Admission and discharge details, test results, follow-up advice, etc."></textarea>
   <div class="actions"><button class="primary" data-act="saveMedical" id="mhSave">Save medical history</button><button data-act="cancelEdit" data-form="medical" id="mhCancel">Clear form</button></div>
-  <div id="mhResult"></div>
+  <div id="mhResult" aria-live="polite"></div>
  </div>
  <div class="card"><h2>Recorded medical history</h2><p class="muted">Keep dates and details accurate; this is a personal record, not a substitute for the original medical documents.</p><div id="medicalHistoryList"></div></div>
 </section>
@@ -276,13 +437,13 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
    <button data-act="shareCSV" id="shareCsvBtn">Share CSV…</button>
    <button class="primary" data-act="sharePending" id="sharePendingBtn" hidden>Tap to share now</button>
   </div>
-  <div id="exResult"></div>
+  <div id="exResult" aria-live="polite"></div>
  </div>
  <div class="card"><h2>Read-only share link</h2>
   <p class="muted">Creates a private web link to this period's report. Whoever has the link can view it — and download it as PDF or CSV — until it expires or you revoke it. Photos and your contacts are not included.</p>
   <div class="fields"><div><label for="slDays">Link expires after</label><select id="slDays"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option></select></div></div>
   <div class="actions"><button class="primary" data-act="createShareLink">Create share link</button></div>
-  <div id="slResult"></div>
+  <div id="slResult" aria-live="polite"></div>
   <h3>Your links</h3>
   <div id="shareLinkList" class="scroll"></div>
  </div>
@@ -301,17 +462,17 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
   <div><label for="nationalEmergencyNumber">National emergency number (India)</label><input id="nationalEmergencyNumber" type="tel" value="112"></div>
  </div>
  <label for="contactNotes">Additional emergency instructions (optional)</label><textarea id="contactNotes" placeholder="Preferred emergency entrance, important instructions, etc."></textarea>
- <div class="actions"><button class="primary" data-act="saveContacts">Save emergency numbers & instructions</button></div><div id="contactResult"></div>
+ <div class="actions"><button class="primary" data-act="saveContacts">Save emergency numbers & instructions</button></div><div id="contactResult" aria-live="polite"></div>
  <div class="alert warn">Verify local ambulance availability and emergency numbers in your area. In a life-threatening emergency, contact emergency services directly.</div></div>
  <div class="card"><h2>Account</h2>
   <div class="fields"><div><label for="curPass">Current password</label><input id="curPass" type="password" autocomplete="current-password"></div><div><label for="newPass">New password</label><input id="newPass" type="password" autocomplete="new-password" minlength="8"></div></div>
-  <div class="actions"><button data-act="changePassword">Change password</button><button data-act="signOut">Sign out</button></div><div id="accountResult"></div>
+  <div class="actions"><button data-act="changePassword">Change password</button><button data-act="signOut">Sign out</button></div><div id="accountResult" aria-live="polite"></div>
  </div>
  <div class="card"><h2>Backup and import</h2>
   <p class="muted">Your records are saved online in your account. You can also keep your own copy, or bring in records from the old single-device VitalPath app (its “Download backup” file).</p>
   <div class="actions"><button class="primary" data-act="backup">Download full backup (JSON)</button>
-   <label class="btn" style="margin:0">Import old VitalPath backup <input type="file" id="importFile" accept=".json,application/json" hidden></label></div>
-  <div id="importResult"></div>
+   <button type="button" data-act="pickImport">Import old VitalPath backup</button><input type="file" id="importFile" accept=".json,application/json" hidden></div>
+  <div id="importResult" aria-live="polite"></div>
   <div style="border-top:1px solid var(--line);margin:16px 0"></div>
   <button class="danger" data-act="eraseAll">Delete all my records and photos</button>
  </div>
@@ -324,10 +485,16 @@ footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
 </section>
 </main>
 
+<div id="moreSheet" class="sheet" hidden role="dialog" aria-modal="true" aria-label="More sections"><div class="panel"><div class="grab"></div>
+ <button class="tab" data-page="history"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18"/><path d="m7 15 4-4 3 3 5-6"/></svg><span>History & charts</span></button>
+ <button class="tab" data-page="medical"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V3h6v1"/><path d="M12 9v6M9 12h6"/></svg><span>Medical history</span></button>
+ <button class="tab" data-page="share"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></svg><span>Share & export</span></button>
+ <button class="tab" data-page="settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span>Profile & backup</span></button>
+</div></div>
 <div id="lightbox" class="lightbox" hidden><img alt="Report"><button data-act="closeLightbox">Close</button></div>
-<div id="toast" class="toast" hidden></div>
+<div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
 
-<footer>VitalPath Health Journal • Designed by Biraj Das • Your records are private to your account • Educational support only; not a substitute for medical care.</footer>
+<footer>VitalPath Health Journal • Your records are private to your account • Educational support only; not a substitute for medical care.</footer>
 
 <script src="config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous"></script>
