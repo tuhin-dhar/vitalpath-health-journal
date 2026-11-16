@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#123b52">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://*.supabase.co; connect-src 'self' data: blob: https://*.supabase.co wss://*.supabase.co; frame-src 'none'; object-src 'none'; base-uri 'none'; form-action 'self'">
+<title>VitalPath Health Journal | Designed by Biraj Das</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='12' fill='%23123f54'/%3E%3Cpath d='M10 25h7l3.2-7 4.1 14 3.2-7H38' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+:root{--navy:#123047;--teal:#087f83;--bg:#f3f7f8;--ink:#172f3d;--muted:#637985;--line:#dce7ea;--green:#18794e;--amber:#9b6200;--red:#b42318}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:linear-gradient(180deg,#edf4f5 0,#f7f9fa 240px);color:var(--ink);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:linear-gradient(115deg,#102c42 0%,#12475a 56%,#087f83 100%);color:white;padding:23px 18px 25px;box-shadow:0 8px 24px #102c4218}
+header .inner,main,footer,.view{max-width:1080px;margin:auto}
+.brandbar{display:flex;align-items:center;gap:15px}
+.brandmark{width:56px;height:56px;display:grid;place-items:center;border:1px solid #ffffff50;border-radius:17px;background:#ffffff12;flex:none}
+.brandmark svg{width:42px;height:42px}
+.brandcopy{min-width:0;flex:1}
+.brand-kicker{font-size:10px;letter-spacing:2.2px;font-weight:750;color:#bde8e6;margin-bottom:3px}
+h1{font-size:clamp(24px,4vw,32px);letter-spacing:-.8px;line-height:1.1;margin:0;font-weight:780}
+h1 span{font-weight:450;color:#d4eeee}
+header p{margin:7px 0 0;color:#d9eeee;font-size:13px}
+.brand-credit{font-size:9px;letter-spacing:1.4px;color:#c8e7e6;text-align:right;line-height:1.55;white-space:nowrap}
+.brand-credit strong{font-size:13px;letter-spacing:.2px;color:#fff}
+.userbar{display:flex;justify-content:flex-end;gap:10px;align-items:center;margin-top:10px;font-size:12px;color:#d9eeee}
+.userbar button{padding:6px 11px;font-size:12px;background:#ffffff18;color:#fff;border-color:#ffffff40}
+main{padding:20px 16px 28px;display:grid;gap:15px}
+.view{padding:20px 16px 28px}
+.card{background:#fff;border:1px solid #e1eaed;border-radius:17px;padding:18px;box-shadow:0 5px 18px #163b4b0b;min-width:0}
+.card.inset{background:#f8fbfc;box-shadow:none;margin-top:10px}
+h2{font-size:18px;letter-spacing:-.2px;margin:0 0 12px;color:#16384a}
+h3{font-size:15px;margin:14px 0 6px;color:#16384a}
+.muted,.sub{color:var(--muted);font-size:13px}
+nav{display:flex;gap:7px;overflow:auto;padding:5px 1px 11px;scrollbar-width:thin}
+.tab,button,.btn{border:1px solid #dce7e9;border-radius:11px;padding:10px 14px;font:650 13px system-ui,sans-serif;cursor:pointer;background:#fff;color:#244657;white-space:nowrap;transition:background .15s,border-color .15s,transform .15s;text-decoration:none;display:inline-block}
+.tab:hover,button:hover,.btn:hover{border-color:#83babb;transform:translateY(-1px)}
+.tab.active,button.primary,.btn.primary{background:#123f54;border-color:#123f54;color:white;box-shadow:0 3px 9px #123f5420}
+button.danger{background:#fff0ef;color:#b42318;border-color:#f0d9d6}
+button.small{padding:8px 12px;font-size:13px;min-height:44px;min-width:44px}
+button:disabled{opacity:.55;cursor:wait;transform:none}
+.page{display:none}.page.active{display:grid;gap:15px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+label{display:block;font-weight:650;font-size:12px;margin:11px 0 5px;color:#385362}
+input,select,textarea{width:100%;min-height:45px;padding:10px 12px;border:1px solid #cbdadd;border-radius:10px;background:#fcfefe;color:var(--ink);font:inherit;outline:none}
+input[type=checkbox]{width:auto;min-height:auto}
+input:focus,select:focus,textarea:focus{border-color:#16868a;box-shadow:0 0 0 3px #16868a19}
+textarea{min-height:75px}
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fields3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;align-items:center}
+.metric{font-size:29px;font-weight:780;letter-spacing:-.6px}
+.status{font-weight:750;margin-top:4px}.good{color:var(--green)}.warn{color:var(--amber)}.bad{color:var(--red)}
+.gaugeRow{display:flex;align-items:center;gap:14px;margin-top:12px}
+.gauge{width:76px;height:76px;border-radius:50%;background:conic-gradient(var(--g,#18794e) calc(var(--p,0)*1%),#e8eff0 0);display:grid;place-items:center;flex:none}
+.gauge:before{content:"";grid-area:1/1;width:58px;height:58px;background:white;border-radius:50%}
+.gauge b{grid-area:1/1;z-index:1;font-size:11px;text-align:center}
+.detail{flex:1;min-width:0}.detail .metric{font-size:26px}.detail small{color:var(--muted)}
+.alert{padding:12px 14px;border-radius:11px;margin-top:11px;font-size:13px;background:#edf5f8;border:1px solid #d9e9ed;border-left:4px solid #287a91}
+.alert.good{background:#edf8f1;border-color:#d7ebdf;border-left-color:var(--green)}
+.alert.warn{background:#fff8e9;border-color:#f1e4c6;border-left-color:#c17b12}
+.alert.bad{background:#fff2f0;border-color:#f0d9d6;border-left-color:var(--red)}
+.gate{position:fixed;inset:0;z-index:20;overflow:auto;background:linear-gradient(160deg,#edf5f6,#f7f9fa);padding:15px}
+.gateBox{max-width:690px;margin:4vh auto;background:white;padding:24px;border:1px solid #dce7ea;border-radius:20px;box-shadow:0 18px 55px #15394a18}
+.gateBox.narrow{max-width:440px}
+.gateBox h2{font-size:23px;margin-top:9px}.gateBox p{color:var(--muted);font-size:14px}
+.gate-brand{font-size:11px;letter-spacing:2px;font-weight:800;color:#087f83}.gate-brand span{font-weight:500;color:#53717c}
+table{border-collapse:collapse;width:100%;font-size:13px}td,th{text-align:left;border-bottom:1px solid var(--line);padding:8px;vertical-align:top}th{color:#47616e;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.scroll{overflow-x:auto}
+canvas{width:100%;height:auto;display:block}
+.legend{display:flex;gap:14px;font-size:12px;color:var(--muted);margin-top:6px}.legend i{display:inline-block;width:12px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+details.panel{border:1px solid var(--line);border-radius:12px;margin-top:10px;background:#fbfdfd}
+details.panel summary{cursor:pointer;padding:11px 14px;font-weight:700;color:#16384a;list-style-position:inside}
+details.panel .body{padding:0 14px 12px}
+.testRow{display:grid;grid-template-columns:minmax(150px,1.6fr) 1fr 1.4fr;gap:8px;align-items:center;padding:6px 0;border-bottom:1px dashed var(--line)}
+.testRow:last-child{border-bottom:0}
+.testRow .tname{font-size:13px;font-weight:600}.testRow .tname small{display:block;color:var(--muted);font-weight:400}
+.testRow input{min-height:38px;padding:7px 9px}
+.range{display:flex;gap:4px;align-items:center}.range span{color:var(--muted)}
+.chip{display:inline-block;border-radius:999px;padding:2px 9px;font-size:11px;font-weight:750;background:#edf8f1;color:var(--green)}
+.chip.HIGH{background:#fff2f0;color:var(--red)}.chip.LOW{background:#fff8e9;color:var(--amber)}
+.thumbs{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.thumb{position:relative;width:110px;height:110px;border-radius:10px;border:1px solid var(--line);overflow:hidden;background:#eef4f5;display:grid;place-items:center;font-size:11px;color:var(--muted);text-align:center}
+.thumb img{width:100%;height:100%;object-fit:cover;cursor:zoom-in}
+.thumb button{position:absolute;top:3px;right:3px;padding:0;width:40px;height:40px;font-size:16px;border-radius:9px}
+.labLatest{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.labLatest div{border:1px solid var(--line);border-radius:11px;padding:9px 11px;background:#fbfdfd}
+.labLatest b{display:block;font-size:18px}
+.banner{background:#fff8e9;border-bottom:1px solid #f1e4c6;color:#7a4d00;text-align:center;font-size:13px;padding:8px}
+.lightbox{position:fixed;inset:0;background:#0b1d28e6;z-index:40;display:grid;place-items:center;padding:16px}
+.lightbox img{max-width:100%;max-height:88vh;border-radius:8px;background:#fff}
+.lightbox button{position:absolute;top:14px;right:14px}
+.linkbox{display:flex;gap:6px}.linkbox input{min-height:40px;font-size:12px}
+.toast{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);background:#123f54;color:#fff;padding:10px 16px;border-radius:11px;font-size:13px;z-index:50;box-shadow:0 8px 24px #0003;max-width:calc(100% - 32px)}
+footer{padding:0 16px 25px;color:#71838c;font-size:11px;text-align:center}
+@media(max-width:620px){.brandbar{gap:10px}.brandmark{width:46px;height:46px;border-radius:14px}.brandmark svg{width:35px;height:35px}.brand-credit{font-size:8px}.brand-credit strong{font-size:11px}.grid,.fields,.fields3{grid-template-columns:1fr}main,.view{padding:12px 10px 22px}.card{padding:15px}.gateBox{margin:1vh auto;padding:18px}h1{font-size:24px}.testRow{grid-template-columns:1fr 1fr}.testRow .range{grid-column:1/-1}}
+@media print{header,nav,footer,.actions,.banner{display:none!important}.card{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div id="demoBanner" class="banner" hidden>Demo mode — accounts and records stay in this browser only. Do not enter real health data here.</div>
+<header>
+ <div class="inner brandbar">
+  <div class="brandmark" aria-hidden="true"><svg viewBox="0 0 48 48"><path d="M24 4.5c-7.8 0-14 6.2-14 14 0 10.1 14 25 14 25s14-14.9 14-25c0-7.8-6.2-14-14-14Z" fill="none" stroke="currentColor" stroke-width="2.6"/><path d="M12.5 22.5h7l3.2-7 4.1 14 3.2-7h5.5" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div class="brandcopy"><div class="brand-kicker">PERSONAL HEALTH COMPANION</div><h1>VitalPath <span>Health Journal</span></h1><p>One place for your readings, lab reports, medical history and care contacts.</p></div>
+  <div class="brand-credit">DESIGNED BY<br><strong>Biraj Das</strong></div>
+ </div>
+ <div class="inner userbar" id="userbar" hidden><span id="userEmail"></span><button data-act="signOut">Sign out</button></div>
+</header>
+
+<!-- Supabase not configured yet -->
+<div id="setupView" class="view" hidden>
+ <div class="card"><h2>Connect this site to Supabase</h2>
+  <p class="muted">This copy of VitalPath has no database settings yet. Fill in <code>config.js</code> with your Supabase project URL and anon key — the README explains each step and takes about 15 minutes.</p>
+  <div class="actions"><a class="btn primary" href="?demo=1">Try the demo instead</a></div>
+ </div>
+</div>
+
+<!-- Sign in / sign up -->
+<div id="authGate" class="gate" hidden>
+ <div class="gateBox narrow">
+  <div class="gate-brand">VITALPATH <span>HEALTH JOURNAL</span></div>
+  <h2 id="authTitle">Sign in</h2>
+  <p id="authIntro">Each person has a private account. Only you can see your records.</p>
+  <form id="authForm" autocomplete="on">
+   <div id="authEmailWrap"><label for="authEmail">Email</label><input id="authEmail" type="email" autocomplete="email"></div>
+   <div id="authPassWrap"><label for="authPass">Password</label><input id="authPass" type="password" autocomplete="current-password" minlength="8"></div>
+   <div id="authPass2Wrap" hidden><label for="authPass2">Repeat password</label><input id="authPass2" type="password" autocomplete="new-password" minlength="8"></div>
+   <div id="authMsg"></div>
+   <div class="actions"><button class="primary" id="authSubmit" type="submit">Sign in</button></div>
+  </form>
+  <p class="muted" id="authLinks" style="margin-top:16px">
+   <a href="#" data-act="authMode" data-mode="signup">Create an account</a> ·
+   <a href="#" data-act="authMode" data-mode="reset">Forgot password?</a>
+  </p>
+ </div>
+</div>
+
+<!-- Personal profile -->
+<div id="profileGate" class="gate" hidden>
+ <div class="gateBox">
+  <div class="gate-brand">VITALPATH <span>HEALTH JOURNAL</span></div><h2>Your personal profile</h2>
+  <p>Please complete the required details. Your profile is stored in your private account.</p>
+  <div class="fields">
+   <div><label for="pName">Full name *</label><input id="pName" autocomplete="name" placeholder="Your name"></div>
+   <div><label for="pAge">Age *</label><input id="pAge" type="number" min="1" max="120" placeholder="Years"></div>
+   <div><label for="pSex">Sex *</label><select id="pSex"><option value="">Select</option><option>Female</option><option>Male</option><option>Prefer not to say</option></select></div>
+   <div><label for="pHeight">Height (cm, optional)</label><input id="pHeight" type="number" min="50" max="250"></div>
+   <div><label for="pWeight">Weight (kg, optional)</label><input id="pWeight" type="number" min="10" max="400" step=".1"></div>
+   <div><label for="pCondition">Health profile (optional)</label><select id="pCondition"><option>Not specified</option><option>Monitoring BP and glucose</option><option>Diabetes</option><option>Hypertension</option><option>Diabetes and hypertension</option><option>Thyroid condition</option><option>Liver condition</option><option>Kidney condition</option></select></div>
+   <div><label for="pBPTarget">Doctor's BP target (optional)</label><input id="pBPTarget" placeholder="As advised by doctor"></div>
+   <div><label for="pSugarTarget">Doctor's glucose target (optional)</label><input id="pSugarTarget" placeholder="As advised by doctor"></div>
+  </div>
+  <div class="alert">Optional profile details do not alter clinical thresholds. Enter personal targets only if your treating doctor has given them.</div>
+  <div id="profileMsg"></div>
+  <div class="actions"><button class="primary" data-act="saveProfile">Save profile and continue</button><button id="profileCancel" data-act="cancelProfile" hidden>Cancel</button></div>
+ </div>
+</div>
+
+<!-- Read-only shared report (opened from a share link) -->
+<div id="shareView" class="view" hidden>
+ <div id="shareBody"></div>
+</div>
+
+<main id="app" hidden>
+<nav>
+ <button class="tab active" data-page="home">Home</button><button class="tab" data-page="bp">Record BP</button><button class="tab" data-page="glucose">Record glucose</button><button class="tab" data-page="labs">Lab reports</button><button class="tab" data-page="history">History & charts</button><button class="tab" data-page="medical">Medical history</button><button class="tab" data-page="share">Share & export</button><button class="tab" data-page="settings">Profile & backup</button>
+</nav>
+
+<section id="home" class="page active">
+ <div class="card" style="border:2px solid #b42318"><h2 style="color:#b42318">Emergency help</h2><div class="grid"><div><div class="sub">AMBULANCE</div><div class="metric"><a id="homeAmbulance" href="tel:108" style="color:#b42318;text-decoration:none">108</a></div><small class="muted">Ambulance service (where available)</small></div><div><div class="sub">NATIONAL EMERGENCY</div><div class="metric"><a id="homeEmergency" href="tel:112" style="color:#b42318;text-decoration:none">112</a></div><small class="muted">India emergency response number</small></div></div><div class="sub" id="homeEmergencyContact" style="margin-top:8px"></div><div class="sub" id="homeEmergencyNote" style="margin-top:8px">Confirm local ambulance availability and numbers in your area.</div><p class="muted">Chest pain, severe breathlessness, fainting, new weakness or numbness, confusion, difficulty speaking or sudden vision loss require emergency medical help. Do not wait for this application.</p></div>
+ <div class="card"><div class="sub">PERSONAL HEALTH PROFILE</div><div class="metric" id="homeName">—</div><div class="sub" id="homeMeta"></div><div class="sub" id="homeExtra" style="margin-top:7px"></div><div class="actions"><button data-act="editProfile">Edit personal details</button></div></div>
+ <div class="grid">
+  <div class="card"><div class="sub">LATEST BLOOD PRESSURE</div><div class="gaugeRow"><div class="gauge" id="bpGauge"><b>BP</b></div><div class="detail"><div class="metric" id="bpValue">—</div><div class="status" id="bpStatus">Awaiting reading</div><small id="bpDate">No reading yet</small></div></div><div class="sub" id="bpSummary" style="margin-top:10px">Record a reading to see interpretation.</div></div>
+  <div class="card"><div class="sub">LATEST BLOOD GLUCOSE</div><div class="gaugeRow"><div class="gauge" id="glucoseGauge"><b>GLU</b></div><div class="detail"><div class="metric" id="glucoseValue">—</div><div class="status" id="glucoseStatus">Awaiting reading</div><small id="glucoseDate">No reading yet</small></div></div><div class="sub" id="glucoseSummary" style="margin-top:10px">Record a reading to see interpretation.</div></div>
+ </div>
+ <div class="card"><h2>Latest lab results</h2><div id="homeLabs" class="muted">Add a lab report to see HbA1c, thyroid, liver, kidney and cholesterol values here.</div><div class="actions"><button data-act="go" data-page="labs">Add / view lab reports</button></div></div>
+ <div class="card"><h2>Health guidance</h2><div id="homeAdvice" class="muted">Your latest readings and brief interpretation will appear here.</div></div>
+ <div class="card"><h2>My doctors & hospital</h2><div id="homeCareContacts" class="muted">Add your consulting doctor and hospital details under Profile & backup.</div><div class="actions"><button data-act="go" data-page="settings">Manage contacts</button></div></div>
+ <div class="card"><h2>Medical history</h2><div id="homeMedicalSummary" class="muted">Record surgeries, hospital admissions, consultations and other medical events.</div><div class="actions"><button data-act="go" data-page="medical">View / add medical history</button></div></div>
+</section>
+
+<section id="bp" class="page">
+ <div class="card"><h2 id="bpFormTitle">Record blood pressure</h2><div class="fields">
+ <div><label for="bpWhen">Date and time</label><input id="bpWhen" type="datetime-local"></div>
+ <div><label for="bpPosition">Position</label><select id="bpPosition"><option>Seated</option><option>Standing</option><option>Lying</option></select></div>
+ <div><label for="sys">Systolic (mmHg)</label><input id="sys" type="number" inputmode="numeric" min="40" max="300" placeholder="e.g. 128"></div>
+ <div><label for="dia">Diastolic (mmHg)</label><input id="dia" type="number" inputmode="numeric" min="20" max="200" placeholder="e.g. 78"></div>
+ <div><label for="pulse">Pulse (optional)</label><input id="pulse" type="number" inputmode="numeric" min="20" max="250"></div>
+ <div><label for="bpContext">Context</label><select id="bpContext"><option>Routine reading</option><option>Before medication</option><option>After medication</option><option>Feeling unwell</option><option>After exercise</option></select></div></div>
+ <label for="bpNote">Notes (optional)</label><textarea id="bpNote"></textarea>
+ <div class="actions"><button class="primary" data-act="saveBP" id="bpSave">Save BP reading</button><button data-act="cancelEdit" data-form="bp" id="bpCancel" hidden>Cancel editing</button></div><div id="bpResult"></div></div>
+ <div class="card muted">For home BP readings, sit quietly for 5 minutes, keep feet flat and back supported, and position the cuffed arm at heart level. Avoid caffeine, smoking and exercise for 30 minutes beforehand. Follow your clinician's measurement instructions.</div>
+</section>
+
+<section id="glucose" class="page">
+ <div class="card"><h2 id="glFormTitle">Record blood glucose</h2><div class="fields">
+ <div><label for="glWhen">Date and time</label><input id="glWhen" type="datetime-local"></div>
+ <div><label for="glType">Measurement type</label><select id="glType"><option>Fasting (8+ hours)</option><option>Before meal</option><option>1 hour after meal</option><option>2 hours after meal</option><option>Random</option><option>Bedtime</option><option>HbA1c</option></select></div>
+ <div><label for="glValue">Result</label><input id="glValue" type="number" inputmode="decimal" min=".1" step=".1" placeholder="e.g. 112"></div>
+ <div><label for="glUnit">Unit</label><select id="glUnit"><option>mg/dL</option><option>mmol/L</option><option>% (HbA1c)</option></select></div></div>
+ <label for="glNote">Notes / meal timing (optional)</label><textarea id="glNote"></textarea>
+ <div class="actions"><button class="primary" data-act="saveGlucose" id="glSave">Save glucose reading</button><button data-act="cancelEdit" data-form="glucose" id="glCancel" hidden>Cancel editing</button></div><div id="glResult"></div></div>
+ <div class="card muted">Fasting, pre-meal, post-meal, random glucose and HbA1c are different measurements. HbA1c shows your average sugar over roughly the last 3 months and comes from a laboratory test — you can also record it with the full report under Lab reports. A home meter reading cannot by itself diagnose diabetes.</div>
+</section>
+
+<section id="labs" class="page">
+ <div class="card"><h2 id="labFormTitle">Add a lab report</h2>
+  <p class="muted">Attach photos or the PDF of the report, and type in the numbers you want to track. Fill only the tests on your report — leave the rest blank. The reference range is pre-filled with typical adult values; change it to the range printed on your report.</p>
+  <div class="fields3">
+   <div><label for="lrDate">Report date</label><input id="lrDate" type="date"></div>
+   <div><label for="lrLab">Laboratory / hospital (optional)</label><input id="lrLab" placeholder="e.g. City Diagnostics"></div>
+   <div><label for="lrDoctor">Referring doctor (optional)</label><input id="lrDoctor"></div>
+  </div>
+  <div id="labPanels"></div>
+  <details class="panel" id="otherPanel"><summary>Other tests</summary><div class="body"><div id="otherTests"></div><div class="actions"><button class="small" data-act="addOtherTest">+ Add another test</button></div></div></details>
+  <label for="lrFiles">Report photos or PDF</label>
+  <input id="lrFiles" type="file" accept="image/*,application/pdf" multiple>
+  <div class="sub">Photos are resized before upload to save space. PDFs up to 10 MB.</div>
+  <div class="thumbs" id="lrPending"></div>
+  <div class="thumbs" id="lrExisting"></div>
+  <label for="lrNotes">Notes (optional)</label><textarea id="lrNotes" placeholder="Doctor's comments, fasting status, medicines at the time, etc."></textarea>
+  <div class="actions"><button class="primary" data-act="saveLabReport" id="lrSave">Save lab report</button><button data-act="cancelEdit" data-form="labs" id="lrCancel" hidden>Cancel editing</button></div>
+  <div id="lrResult"></div>
+ </div>
+ <div class="card"><h2>Lab trend</h2><label for="labTrendTest">Test</label><select id="labTrendTest"></select><canvas id="labChart" width="900" height="230"></canvas><div class="sub" id="labTrendNote"></div></div>
+ <div class="card"><h2>Saved lab reports</h2><div id="labReportList"></div></div>
+</section>
+
+<section id="history" class="page">
+ <div class="card"><h2>Blood pressure trend</h2><canvas id="bpChart" width="900" height="230"></canvas><div class="legend"><span><i style="background:#087e8b"></i>Systolic</span><span><i style="background:#d17b20"></i>Diastolic</span></div></div>
+ <div class="card"><h2>Glucose history</h2><label for="filterType">Measurement type</label><select id="filterType"><option>Fasting (8+ hours)</option><option>Before meal</option><option>1 hour after meal</option><option>2 hours after meal</option><option>Random</option><option>Bedtime</option><option>HbA1c</option></select><canvas id="glChart" width="900" height="230"></canvas></div>
+ <div class="card"><h2>Recent records</h2><div class="scroll" id="historyTable"></div></div>
+</section>
+
+<section id="medical" class="page">
+ <div class="card"><h2 id="mhFormTitle">Add a medical history entry</h2>
+  <p class="muted">Keep a chronological record of surgeries, hospital admissions, doctor consultations, diagnoses, tests, treatments and other important medical events.</p>
+  <div class="fields">
+   <div><label for="mhType">Event type</label><select id="mhType">
+    <option>Surgery / procedure</option><option>Hospital admission</option><option>Doctor consultation</option><option>Clinic visit</option><option>Diagnosis / medical condition</option><option>Medical test / investigation</option><option>Medication / treatment</option><option>Allergy</option><option>Vaccination</option><option>Other</option>
+   </select></div>
+   <div><label for="mhDate">Date and time</label><input id="mhDate" type="datetime-local"></div>
+   <div><label for="mhDoctor">Doctor's name (optional)</label><input id="mhDoctor" placeholder="Consulting doctor's name"></div>
+   <div><label for="mhFacility">Hospital / clinic (optional)</label><input id="mhFacility" placeholder="Name of hospital or clinic"></div>
+   <div><label for="mhReason">Reason / diagnosis / procedure</label><input id="mhReason" placeholder="Brief description"></div>
+   <div><label for="mhOutcome">Outcome / treatment (optional)</label><input id="mhOutcome" placeholder="Treatment, advice or outcome"></div>
+  </div>
+  <label for="mhNotes">Additional notes (optional)</label><textarea id="mhNotes" placeholder="Admission and discharge details, test results, follow-up advice, etc."></textarea>
+  <div class="actions"><button class="primary" data-act="saveMedical" id="mhSave">Save medical history</button><button data-act="cancelEdit" data-form="medical" id="mhCancel">Clear form</button></div>
+  <div id="mhResult"></div>
+ </div>
+ <div class="card"><h2>Recorded medical history</h2><p class="muted">Keep dates and details accurate; this is a personal record, not a substitute for the original medical documents.</p><div id="medicalHistoryList"></div></div>
+</section>
+
+<section id="share" class="page">
+ <div class="card"><h2>Choose a period</h2>
+  <div class="fields">
+   <div><label for="exKind">Report for</label><select id="exKind"><option value="day">One day</option><option value="week" selected>One week (Mon–Sun)</option><option value="month">One month</option><option value="custom">Custom dates</option></select></div>
+   <div id="exDayWrap"><label for="exDay">Any date in the period</label><input id="exDay" type="date"></div>
+   <div id="exMonthWrap" hidden><label for="exMonth">Month</label><input id="exMonth" type="month"></div>
+   <div id="exFromWrap" hidden><label for="exFrom">From</label><input id="exFrom" type="date"></div>
+   <div id="exToWrap" hidden><label for="exTo">To</label><input id="exTo" type="date"></div>
+  </div>
+  <div class="alert" id="exSummary">—</div>
+  <label style="display:flex;gap:8px;align-items:center;font-weight:500"><input type="checkbox" id="exPhotos"> Include report photos in the PDF (makes the file larger)</label>
+ </div>
+ <div class="card"><h2>Download or send</h2>
+  <p class="muted">The PDF is a readable summary with averages and flags; the CSV opens in Excel or Google Sheets.</p>
+  <div class="actions">
+   <button class="primary" data-act="exportPDF">Download PDF</button>
+   <button data-act="exportCSV">Download CSV</button>
+   <button data-act="sharePDF" id="sharePdfBtn">Share PDF…</button>
+   <button data-act="shareCSV" id="shareCsvBtn">Share CSV…</button>
+   <button class="primary" data-act="sharePending" id="sharePendingBtn" hidden>Tap to share now</button>
+  </div>
+  <div id="exResult"></div>
+ </div>
+ <div class="card"><h2>Read-only share link</h2>
+  <p class="muted">Creates a private web link to this period's report. Whoever has the link can view it — and download it as PDF or CSV — until it expires or you revoke it. Photos and your contacts are not included.</p>
+  <div class="fields"><div><label for="slDays">Link expires after</label><select id="slDays"><option value="1">1 day</option><option value="7" selected>7 days</option><option value="30">30 days</option></select></div></div>
+  <div class="actions"><button class="primary" data-act="createShareLink">Create share link</button></div>
+  <div id="slResult"></div>
+  <h3>Your links</h3>
+  <div id="shareLinkList" class="scroll"></div>
+ </div>
+</section>
+
+<section id="settings" class="page">
+ <div class="card"><h2>Personal profile</h2><p class="muted">Your profile details appear on the home screen and at the top of exported reports.</p><button data-act="editProfile">Edit profile</button></div>
+ <div class="card"><h2>Doctors, hospitals, clinics & emergency contacts</h2>
+ <p class="muted">Add as many doctors, hospitals, clinics and personal emergency contacts as you need.</p>
+ <div class="actions"><button class="primary" data-act="addCareContact">+ Add a contact / facility</button></div>
+ <div id="careDirectoryEditor"></div>
+ <div style="border-top:1px solid var(--line);margin:16px 0"></div>
+ <h2>Emergency service numbers</h2>
+ <div class="fields">
+  <div><label for="ambulanceNumber">Local ambulance number</label><input id="ambulanceNumber" type="tel" value="108"></div>
+  <div><label for="nationalEmergencyNumber">National emergency number (India)</label><input id="nationalEmergencyNumber" type="tel" value="112"></div>
+ </div>
+ <label for="contactNotes">Additional emergency instructions (optional)</label><textarea id="contactNotes" placeholder="Preferred emergency entrance, important instructions, etc."></textarea>
+ <div class="actions"><button class="primary" data-act="saveContacts">Save emergency numbers & instructions</button></div><div id="contactResult"></div>
+ <div class="alert warn">Verify local ambulance availability and emergency numbers in your area. In a life-threatening emergency, contact emergency services directly.</div></div>
+ <div class="card"><h2>Account</h2>
+  <div class="fields"><div><label for="curPass">Current password</label><input id="curPass" type="password" autocomplete="current-password"></div><div><label for="newPass">New password</label><input id="newPass" type="password" autocomplete="new-password" minlength="8"></div></div>
+  <div class="actions"><button data-act="changePassword">Change password</button><button data-act="signOut">Sign out</button></div><div id="accountResult"></div>
+ </div>
+ <div class="card"><h2>Backup and import</h2>
+  <p class="muted">Your records are saved online in your account. You can also keep your own copy, or bring in records from the old single-device VitalPath app (its “Download backup” file).</p>
+  <div class="actions"><button class="primary" data-act="backup">Download full backup (JSON)</button>
+   <label class="btn" style="margin:0">Import old VitalPath backup <input type="file" id="importFile" accept=".json,application/json" hidden></label></div>
+  <div id="importResult"></div>
+  <div style="border-top:1px solid var(--line);margin:16px 0"></div>
+  <button class="danger" data-act="eraseAll">Delete all my records and photos</button>
+ </div>
+ <div class="card"><h2>Reference guide</h2>
+  <p><b>BP:</b> General adult categories: normal below 120/80; elevated systolic 120–129 with diastolic below 80; high BP stage 1 range 130–139 or 80–89; stage 2 range at least 140 or at least 90. Above 180 systolic and/or above 120 diastolic is very high: repeat after at least one minute and contact a clinician urgently if it remains high. With concerning symptoms, seek emergency care.</p>
+  <p><b>Glucose:</b> Below 70 mg/dL is low; below 54 is clinically significant low glucose. For many non-pregnant adults with diabetes, common goals are pre-meal 80–130 and peak post-meal below 180 mg/dL, but targets are individualised. Fasting laboratory plasma glucose 126 mg/dL or above is in the diabetes diagnostic range and needs clinical confirmation.</p>
+  <p><b>HbA1c:</b> average blood sugar over about 3 months. Below 5.7% is the usual reference; 5.7–6.4% is the prediabetes range; 6.5% or above is the diabetes range. Many adults with diabetes aim for below 7%, but your doctor sets your target.</p>
+  <p><b>Lab ranges:</b> the pre-filled thyroid, liver, kidney and lipid ranges are typical adult values. Laboratories differ — always use the range printed on your own report.</p>
+  <p class="muted">This is an educational monitoring aid, not a medical device or diagnostic service. Your treating doctor's instructions take priority. Never change medication based only on this app.</p></div>
+</section>
+</main>
+
+<div id="lightbox" class="lightbox" hidden><img alt="Report"><button data-act="closeLightbox">Close</button></div>
+<div id="toast" class="toast" hidden></div>
+
+<footer>VitalPath Health Journal • Designed by Biraj Das • Your records are private to your account • Educational support only; not a substitute for medical care.</footer>
+
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha384-JcnsjUPPylna1s1fvi1u12X5qjY5OL56iySh75FdtrwhO/SWXgMjoVqcKyIIWOLk" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js" integrity="sha384-fCAW/rDWORTbQXSiB7mOg0QtQ5c+r0f544y6XoKjuVva0nMBlCpNUjiFeG5iMdS3" crossorigin="anonymous"></script>
+<script src="demo-db.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
